@@ -37,12 +37,41 @@ const info = document.getElementById("info")
 
 const prevBtn = document.querySelector(".prev-btn")
 const nextBtn = document.querySelector(".next-btn")
-const randomBtn = document.querySelector(".random -btn")
+const randomBtn = document.querySelector(".random-btn")
 
-let currentItem = 0;
+let currentItem = 2;
 
 window.addEventListener("DOMContentLoaded", function () {
     console.log("Shake and bake")
-    const item = reviews[currentItem]
-    img.src = item.img 
+    showPerson(currentItem)
+})
+function showPerson(person) {
+    const item = reviews[person]
+    img.src = item.img
+    author.textContent = item.name
+    job.textContent = item.job
+    info.textContent = item.text
+}
+
+nextBtn.addEventListener("click", function () {
+    currentItem++
+    if (currentItem > reviews.length - 1) {
+        currentItem = 0
+    }
+    showPerson(currentItem)
+})
+prevBtn.addEventListener("click", function () {
+    currentItem--
+    if (currentItem < 0) {
+        currentItem = reviews.length-1
+    }
+    showPerson(currentItem)
+})
+function randomPerson(){
+    let randomN = Math.floor(Math.random()*4)
+    return randomN
+}
+randomBtn.addEventListener("click", function () {
+    showPerson(randomPerson())
+    console.log(randomPerson())
 })
