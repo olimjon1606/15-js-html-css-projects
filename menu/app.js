@@ -108,22 +108,19 @@ function diplayMenuItems(menuItems) {
 
     sectionCenter.innerHTML = displayMenu;
 }
+
 function displayMenuButtons() {
-    const categories = menu.reduce(
-        function (values, item) {
-            if (!values.includes(item.category)) {
-                values.push(item.category);
-            }
-            return values;
-        },
-        ["all"]
-    );
-    const categoryBtns = categories
-        .map(function (category) {
-            return `<button type="button" class="filter-btn" data-id=${category}>
-            ${category}
-          </button>`;
-        })
+    const categories = menu.reduce(function (values, item) {
+        if (!values.includes(item.category)) {
+            values.push(item.category);
+        }
+        return values;
+    }, ["all"]);
+    const categoryBtns = categories.map(function (category) {
+        return `<button type="button" class="filter-btn" data-id=${category}>
+                    ${category}
+                </button>`;
+    })
         .join("");
 
     btnContainer.innerHTML = categoryBtns;
