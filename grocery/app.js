@@ -80,7 +80,7 @@ function clearItems() {
     displayAlert("empty list", "danger")
 
     setBackToDefault()
-    // localStorage.removeItem("list")
+    localStorage.removeItem("list")
 }
 function setBackToDefault() {
     grocery.value = ""
@@ -98,7 +98,7 @@ function deleteItem(e) {
     }
     displayAlert("item deleted", "danger")
     setBackToDefault()
-    // removeFromLocalStorage(id)
+    removeFromLocalStorage(id)
 }
 
 function editItem(e) {
@@ -114,6 +114,20 @@ function editItem(e) {
 
 function addToLocalStorage(id, value) {
     const grocery = { id, value };
-    let items = localStorage.getItem("list") ? JSON.parse(localStorage.getItem("list")) : [];
+    let items = getLocalStorage()
+    items.push(grocery)
+    localStorage.setItem("list", JSON.stringify(items))
+}
+function removeFromLocalStorage(id) {
+    let items = getLocalStorage()
+    items = items.filter(function (item) {
+        if (item.id !== id) {
+            return item;
+        }
+    })
+localStorage.setItem("list", JSON.stringify(items));
+}
 
+function getLocalStorage() {
+    return localStorage.getItem("list") ? JSON.parse(localStorage.getItem("list")) : [];
 }
