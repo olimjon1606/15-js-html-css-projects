@@ -11,19 +11,20 @@ let editFlag = false;
 let editId = '';
 
 form.addEventListener("submit", addItem)
+clearBtn.addEventListener("click", clearItems)
 
 function addItem(e) {
     e.preventDefault();
     const value = grocery.value
     const id = new Date().getTime().toString();
-    if(value  && !editFlag) {
+    if (value && !editFlag) {
         const element = document.createElement('article');
         element.classList.add("grocery-item")
 
         const attr = document.createAttribute('data-id')
         attr.value = id
         element.setAttributeNode(attr)
-        element.innerHTML = `<p class="title">item</p>
+        element.innerHTML = `<p class="title">${value}</p>
         <div class="btn-container">
             <button class="edit-btn">
                 <i class="fas fa-edit"></i>
@@ -33,19 +34,48 @@ function addItem(e) {
                 <i class="fas fa-trash"></i>
             </button>
         </div>`
-    }else if(value && editFlag){
+        list.appendChild(element)
+
+        displayAlert("item added to the list", "success")
+
+        container.classList.add("show-container")
+
+        // addToLocalStorage(id, value);
+        setBackToDefault();
+
+    } else if (value && editFlag) {
         console.log("editing item");
-    }else{
+    } else {
         displayAlert("please enter a value", "danger")
     }
 }
 
-function displayAlert(text, action){
+function displayAlert(text, action) {
     alert.textContent = text;
     alert.classList.add(`alert-${action}`)
 
-    setTimeout(function(){
-        alert.textContent=""
+    setTimeout(function () {
+        alert.textContent = ""
         alert.classList.remove(`alert-${action}`)
     }, 1000)
+}
+function clearItems(){
+    const items = document.querySelectorAll('.grocery-item');
+
+    if(items.length>0){
+        items.forEach(function(item){
+            list.removeChild(item)
+        })
+    }
+    container.classList.remove("show-container")
+    displayAlert("empty list", "danger")
+
+    setBackToDefault()
+    // localStorage.removeItem("list")
+}
+function setBackToDefault(){
+    grocery.value = ""
+    editFlag = false;
+    editId = ''
+    submitBtn.textContent = "submit"
 }
