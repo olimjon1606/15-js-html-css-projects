@@ -19,6 +19,20 @@ function addItem(e) {
     if(value  && !editFlag) {
         const element = document.createElement('article');
         element.classList.add("grocery-item")
+
+        const attr = document.createAttribute('data-id')
+        attr.value = id
+        element.setAttributeNode(attr)
+        element.innerHTML = `<p class="title">item</p>
+        <div class="btn-container">
+            <button class="edit-btn">
+                <i class="fas fa-edit"></i>
+            </button>
+
+            <button class="delete-btn">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>`
     }else if(value && editFlag){
         console.log("editing item");
     }else{
