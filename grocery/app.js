@@ -34,17 +34,26 @@ function addItem(e) {
                 <i class="fas fa-trash"></i>
             </button>
         </div>`
+
+        const deleteBtn = element.querySelector(".delete-btn")
+        const editBtn = element.querySelector(".edit-btn")
+        deleteBtn.addEventListener("click", deleteItem)
+        editBtn.addEventListener("click", editItem)
+
         list.appendChild(element)
 
         displayAlert("item added to the list", "success")
 
         container.classList.add("show-container")
 
-        // addToLocalStorage(id, value);
+        addToLocalStorage(id, value);
         setBackToDefault();
 
     } else if (value && editFlag) {
-        console.log("editing item");
+        editElement.innerHTML = value
+        displayAlert("value changed", "success")
+        // editLocalStorage(editId, value)
+        setBackToDefault()
     } else {
         displayAlert("please enter a value", "danger")
     }
@@ -59,11 +68,11 @@ function displayAlert(text, action) {
         alert.classList.remove(`alert-${action}`)
     }, 1000)
 }
-function clearItems(){
+function clearItems() {
     const items = document.querySelectorAll('.grocery-item');
 
-    if(items.length>0){
-        items.forEach(function(item){
+    if (items.length > 0) {
+        items.forEach(function (item) {
             list.removeChild(item)
         })
     }
@@ -73,9 +82,38 @@ function clearItems(){
     setBackToDefault()
     // localStorage.removeItem("list")
 }
-function setBackToDefault(){
+function setBackToDefault() {
     grocery.value = ""
     editFlag = false;
     editId = ''
     submitBtn.textContent = "submit"
+}
+
+function deleteItem(e) {
+    const element = e.currentTarget.parentElement.parentElement
+    const id = element.dataset.id
+    list.removeChild(element)
+    if (list.children.length === 0) {
+        container.classList.remove("show-container")
+    }
+    displayAlert("item deleted", "danger")
+    setBackToDefault()
+    // removeFromLocalStorage(id)
+}
+
+function editItem(e) {
+    const element = e.currentTarget.parentElement.parentElement
+
+    editElement = e.currentTarget.parentElement.previousElementSibling
+    grocery.value = editElement.innerHTML
+    editFlag = true
+    editId = element.dataset.id
+    submitBtn.textContent = 'Edit'
+}
+
+
+function addToLocalStorage(id, value) {
+    const grocery = { id, value };
+    let items = localStorage.getItem("list") ? JSON.parse(localStorage.getItem("list")) : [];
+
 }
